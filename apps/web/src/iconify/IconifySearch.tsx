@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { act } from "../actions";
 import { Icon } from "../components/Icon";
 import { useEditor } from "../store";
-import { collectionCredit, fetchIconSvg, iconPreviewUrl, searchIcons, type IconSearch } from "./api";
+import { collectionCredit, fetchIconSvg, searchIcons, type IconSearch } from "./api";
 import { encodeIconDrag, ICON_MIME } from "./drop";
 import { iconifyMessage, iconImportArgs, isOffline } from "./place";
+import { iconPreview } from "./preview";
 
 export function IconifySearch() {
   const [input, setInput] = useState("");
@@ -68,14 +69,23 @@ export function IconifySearch() {
 
 function IconTile({ id }: { id: string }) {
   const svgRef = useRef<string | null>(null);
+  const [preview, setPreview] = useState<ReturnType<typeof iconPreview> | null>(null);
+  const [previewError, setPreviewError] = useState(false);
 
   useEffect(() => {
     let live = true;
+    setPreview(null);
+    setPreviewError(false);
+    svgRef.current = null;
     fetchIconSvg(id).then(
       (svg) => {
-        if (live) svgRef.current = svg;
+        if (!live) return;
+        svgRef.current = svg;
+        setPreview(iconPreview(svg));
       },
-      () => undefined,
+      () => {
+        if (live) setPreviewError(true);
+      },
     );
     return () => {
       live = false;
@@ -131,7 +141,11 @@ function IconTile({ id }: { id: string }) {
         e.dataTransfer.effectAllowed = "copy";
       }}
     >
-      <img src={iconPreviewUrl(id)} alt="" draggable={false} />
+      {preview && !previewError ? (
+        <img src={preview.src} className={preview.monochrome ? "iconify-monochrome" : undefined} width={32} height={32} alt="" draggable={false} onError={() => setPreviewError(true)} />
+      ) : (
+        <span className="iconify-status">{previewError ? "Preview unavailable" : "Loading…"}</span>
+      )}
       <button type="button" className="icon-btn mini iconify-copy" title="Copy SVG" aria-label={`Copy ${id}`} onClick={(e) => void copy(e)}>
         <Icon name="copy" size={11} />
       </button>

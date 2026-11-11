@@ -26,7 +26,7 @@ describe("iconify urls", () => {
   it("bakes a hex colour into the svg request", () => {
     expect(normalizeHex("#0a0")).toBe("00aa00");
     expect(iconSvgPath("lucide:house", { color: "#0a0" })).toBe("/lucide/house.svg?color=%2300aa00");
-    expect(iconPreviewUrl("lucide:house")).toBe("https://api.iconify.design/lucide/house.svg?color=%23000000&width=32&height=32");
+    expect(iconPreviewUrl("lucide:house")).toBe("https://api.iconify.design/lucide/house.svg?color=%23ffffff&width=32&height=32");
     expect(searchPath("arrow right", { limit: 100, prefix: "lucide" })).toBe("/search?query=arrow+right&limit=64&prefix=lucide");
   });
 

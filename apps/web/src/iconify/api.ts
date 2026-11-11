@@ -97,7 +97,8 @@ export function iconSvgPath(icon: string, opts: { color?: string; size?: number 
 }
 
 export function iconPreviewUrl(icon: string): string {
-  return `${ICONIFY_HOSTS[0]}${iconSvgPath(icon, { size: 32 })}`;
+  // Tint currentColor icons for the dark picker; explicit SVG colors stay intact.
+  return `${ICONIFY_HOSTS[0]}${iconSvgPath(icon, { color: "#ffffff", size: 32 })}`;
 }
 
 export function collectionCredit(collections: Record<string, IconCollection>): string {

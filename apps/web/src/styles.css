@@ -1144,8 +1144,7 @@ textarea {
   border-color: var(--lume-dim);
 }
 
-.iconify-tile > img {
-  /* Keep every preview white, including logos with hard-coded SVG fills. */
+.iconify-tile > img.iconify-monochrome {
   filter: brightness(0) invert(1);
 }
 
