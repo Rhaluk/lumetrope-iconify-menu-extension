@@ -231,7 +231,7 @@ export function Stage({ overlay }: { overlay?: (zoom: number) => React.ReactNode
         if (decision.kind === "icon") {
           try {
             const st = useEditor.getState();
-            const r = act<{ id: string }>("import_svg", svgImportArgs({ svg: decision.svg, name: decision.name, scene: st.scene, position: decision.position }));
+            const r = act<{ id: string }>("import_svg", svgImportArgs({ svg: decision.svg, name: decision.name, scene: st.scene, position: decision.position, canvas: st.info }));
             if (r) st.select([r.id]);
           } catch (err) {
             useEditor.getState().toast(iconifyMessage(err, "Could not add icon"), "error");

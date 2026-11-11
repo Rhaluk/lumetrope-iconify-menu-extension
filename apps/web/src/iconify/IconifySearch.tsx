@@ -85,8 +85,7 @@ function IconTile({ id }: { id: string }) {
   const place = async () => {
     try {
       const st = useEditor.getState();
-      const args = await iconImportArgs(id, { scene: st.scene });
-      svgRef.current = args.svg;
+      const args = await iconImportArgs(id, { scene: st.scene, canvas: st.info });
       const r = act<{ id: string }>("import_svg", args);
       if (r) st.select([r.id]);
     } catch (e) {

@@ -1144,6 +1144,11 @@ textarea {
   border-color: var(--lume-dim);
 }
 
+.iconify-tile > img {
+  /* Keep every preview white, including logos with hard-coded SVG fills. */
+  filter: brightness(0) invert(1);
+}
+
 .iconify-tile .iconify-copy {
   position: absolute;
   top: 2px;
